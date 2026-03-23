@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Md Rahatil Rahman — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── CSS Variables ─── */
+    :root {
+      --accent: #00e5a0;
+      --accent-dim: rgba(0,229,160,0.12);
+      --accent-glow: rgba(0,229,160,0.35);
+
+      /* Dark theme (default) */
+      --bg:        #0a0c10;
+      --bg-2:      #0f1218;
+      --bg-card:   #131720;
+      --border:    rgba(255,255,255,0.07);
+      --text:      #e8eaf0;
+      --text-muted:#7a8099;
+      --nav-bg:    rgba(10,12,16,0.85);
+      --shadow:    0 8px 32px rgba(0,0,0,0.45);
+      --tag-bg:    rgba(255,255,255,0.06);
+    }
+
+    [data-theme="light"] {
+      --bg:        #f4f5f7;
+      --bg-2:      #ffffff;
+      --bg-card:   #ffffff;
+      --border:    rgba(0,0,0,0.09);
+      --text:      #1a1d27;
+      --text-muted:#6b7080;
+      --nav-bg:    rgba(244,245,247,0.88);
+      --shadow:    0 8px 32px rgba(0,0,0,0.10);
+      --tag-bg:    rgba(0,0,0,0.05);
+    }
+
+    /* ─── Reset & Base ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      transition: background 0.35s, color 0.35s;
+      overflow-x: hidden;
+    }
+
+    ::selection { background: var(--accent); color: #000; }
+
+    a { color: inherit; text-decoration: none; }
+
+    img { display: block; width: 100%; }
+
+    /* ─── Noise Texture overlay ─── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.35;
+    }
+
+    /* ─── Typography ─── */
+    h1, h2, h3, h4 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+
+    .section-label {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      color: var(--text);
+      margin-bottom: 1.25rem;
+    }
+
+    /* ─── Layout ─── */
+    .container {
+      width: min(1120px, 92%);
+      margin-inline: auto;
+    }
+
+    section {
+      padding: 110px 0;
+    }
+
+    /* ─── Navigation ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: var(--nav-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.35s, border-color 0.35s;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 68px;
+    }
+
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: var(--text);
+      letter-spacing: -0.02em;
+    }
+
+    .nav-logo span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: color 0.2s;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; left: 0;
+      width: 0; height: 2px;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: width 0.25s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a:hover::after { width: 100%; }
+
+    .nav-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    /* Theme Toggle */
+    .theme-btn {
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      font-size: 0.82rem;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: all 0.2s;
+    }
+
+    .theme-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .theme-icon { font-size: 1rem; }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    /* Mobile nav */
+    .nav-mobile {
+      display: none;
+      flex-direction: column;
+      padding: 1rem 0 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .nav-mobile.open { display: flex; }
+
+    .nav-mobile a {
+      padding: 0.75rem 0;
+      font-weight: 500;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+      transition: color 0.2s;
+    }
+
+    .nav-mobile a:hover { color: var(--accent); }
+
+    /* ─── Buttons ─── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 28px;
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.22s;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #000;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px var(--accent-glow);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .btn-sm {
+      padding: 9px 18px;
+      font-size: 0.85rem;
+    }
+
+    /* ─── Hero ─── */
+    #home {
+      padding-top: 160px;
+      padding-bottom: 120px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Grid lines background */
+    #home::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 30%, transparent 100%);
+    }
+
+    /* Glowing orb */
+    #home::after {
+      content: '';
+      position: absolute;
+      top: -120px; left: 50%;
+      transform: translateX(-50%);
+      width: 700px; height: 500px;
+      background: radial-gradient(ellipse, var(--accent-glow) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      max-width: 760px;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: 1px solid rgba(0,229,160,0.2);
+      border-radius: 50px;
+      padding: 6px 16px;
+      margin-bottom: 1.75rem;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      width: 7px; height: 7px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    .hero-title {
+      font-size: clamp(2.8rem, 8vw, 6rem);
+      letter-spacing: -0.03em;
+      margin-bottom: 1.25rem;
+      color: var(--text);
+    }
+
+    .hero-title .highlight {
+      color: var(--accent);
+      position: relative;
+    }
+
+    .hero-tagline {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: var(--text-muted);
+      font-weight: 300;
+      max-width: 520px;
+      margin-bottom: 2.5rem;
+      line-height: 1.65;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .hero-scroll {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 4rem;
+    }
+
+    .hero-scroll-line {
+      width: 40px;
+      height: 1px;
+      background: var(--text-muted);
+    }
+
+    /* Floating badges */
+    .hero-badges {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+
+    .hero-badge {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .hero-badge:hover {
+      border-color: var(--accent);
+      color: var(--text);
+      transform: translateY(-2px);
+    }
+
+    /* ─── About ─── */
+    #about {
+      background: var(--bg-2);
+      position: relative;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .about-img-wrap {
+      position: relative;
+    }
+
+    .about-img {
+      border-radius: 16px;
+      overflow: hidden;
+      aspect-ratio: 4/5;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+    }
+
+    .about-img img {
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(20%);
+      transition: filter 0.3s;
+    }
+
+    .about-img:hover img { filter: grayscale(0%); }
+
+    /* Decorative corner */
+    .about-img::before {
+      content: '';
+      position: absolute;
+      top: -12px; left: -12px;
+      width: 60%; height: 60%;
+      border-top: 2px solid var(--accent);
+      border-left: 2px solid var(--accent);
+      border-radius: 4px;
+      pointer-events: none;
+    }
+
+    .about-img::after {
+      content: '';
+      position: absolute;
+      bottom: -12px; right: -12px;
+      width: 60%; height: 60%;
+      border-bottom: 2px solid var(--accent);
+      border-right: 2px solid var(--accent);
+      border-radius: 4px;
+      pointer-events: none;
+    }
+
+    .about-stat-row {
+      display: flex;
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+
+    .about-stat {
+      text-align: center;
+    }
+
+    .about-stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .about-stat-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .about-bio {
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      font-size: 1.02rem;
+    }
+
+    .skills-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 1.25rem;
+      letter-spacing: 0.04em;
+    }
+
+    .skills-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .skill-badge {
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 7px 14px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: all 0.2s;
+      cursor: default;
+    }
+
+    .skill-badge:hover {
+      background: var(--accent-dim);
+      border-color: rgba(0,229,160,0.3);
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    /* Progress bars */
+    .skill-bars { margin-top: 1.5rem; }
+
+    .skill-bar-item { margin-bottom: 1.1rem; }
+
+    .skill-bar-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .skill-bar-header span:last-child { color: var(--accent); font-weight: 600; }
+
+    .skill-bar-track {
+      height: 5px;
+      background: var(--tag-bg);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .skill-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), #00c4ff);
+      border-radius: 99px;
+      width: 0;
+      transition: width 1.2s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    /* ─── Projects ─── */
+    #projects { background: var(--bg); }
+
+    .projects-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 3.5rem;
+      gap: 1rem;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .project-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform 0.28s, box-shadow 0.28s, border-color 0.28s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .project-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow);
+      border-color: rgba(0,229,160,0.2);
+    }
+
+    .project-img {
+      aspect-ratio: 16/9;
+      overflow: hidden;
+      position: relative;
+      background: var(--bg-2);
+    }
+
+    .project-img img {
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s;
+    }
+
+    .project-card:hover .project-img img { transform: scale(1.04); }
+
+    .project-tag {
+      position: absolute;
+      top: 12px; left: 12px;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 4px;
+      padding: 4px 10px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .project-body {
+      padding: 1.5rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .project-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+      color: var(--text);
+    }
+
+    .project-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      flex: 1;
+      margin-bottom: 1.25rem;
+    }
+
+    .project-tech {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.25rem;
+    }
+
+    .tech-chip {
+      background: var(--tag-bg);
+      border-radius: 4px;
+      padding: 3px 9px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .project-actions {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    /* ─── Contact ─── */
+    #contact { background: var(--bg-2); }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .contact-info h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .contact-info p {
+      color: var(--text-muted);
+      font-size: 0.97rem;
+      margin-bottom: 2rem;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .contact-icon {
+      width: 44px; height: 44px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(0,229,160,0.2);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .contact-item-label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .contact-item-value {
+      font-size: 0.95rem;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* Form */
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+
+    .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+
+    .form-group label {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 13px 16px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+      resize: none;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-dim);
+    }
+
+    .form-group textarea { min-height: 140px; }
+
+    .form-success {
+      display: none;
+      background: var(--accent-dim);
+      border: 1px solid rgba(0,229,160,0.25);
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: 0.92rem;
+      color: var(--accent);
+      align-items: center;
+      gap: 10px;
+    }
+
+    .form-success.visible { display: flex; }
+
+    /* ─── Footer ─── */
+    footer {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 0;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-copy {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .footer-copy span { color: var(--accent); }
+
+    .footer-socials {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .social-link {
+      width: 40px; height: 40px;
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      color: var(--text-muted);
+      transition: all 0.2s;
+    }
+
+    .social-link:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    /* ─── Scroll to Top ─── */
+    #scrollTop {
+      position: fixed;
+      bottom: 32px; right: 32px;
+      width: 46px; height: 46px;
+      background: var(--accent);
+      color: #000;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 20px var(--accent-glow);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s, transform 0.3s;
+      transform: translateY(12px);
+      z-index: 90;
+    }
+
+    #scrollTop.visible {
+      opacity: 1;
+      pointer-events: all;
+      transform: translateY(0);
+    }
+
+    #scrollTop:hover { transform: translateY(-3px); }
+
+    /* ─── Divider ─── */
+    .divider {
+      width: 48px;
+      height: 3px;
+      background: var(--accent);
+      border-radius: 2px;
+      margin-bottom: 1.5rem;
+    }
+
+    /* ─── Fade-in animation ─── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Stagger delays */
+    .delay-1 { transition-delay: 0.1s; }
+    .delay-2 { transition-delay: 0.2s; }
+    .delay-3 { transition-delay: 0.3s; }
+    .delay-4 { transition-delay: 0.4s; }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 900px) {
+      .projects-grid { grid-template-columns: 1fr 1fr; }
+      .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .about-img-wrap { max-width: 380px; margin: 0 auto; }
+      .projects-header { flex-direction: column; align-items: flex-start; }
+    }
+
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .about-stat-row { gap: 1.25rem; }
+      section { padding: 80px 0; }
+      #home { padding-top: 120px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── Navigation ─── -->
+  <nav>
+    <div class="container">
+      <div class="nav-inner">
+        <a href="#home" class="nav-logo">Ra Ha Til<span>.</span></a>
+        <ul class="nav-links">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="nav-controls">
+          <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
+            <span class="theme-icon" id="themeIcon">🌙</span>
+            <span id="themeLabel">Light</span>
+          </button>
+          <button class="hamburger" id="hamburger" aria-label="Menu">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+      <div class="nav-mobile" id="navMobile">
+        <a href="#home" onclick="closeMobile()">Home</a>
+        <a href="#about" onclick="closeMobile()">About</a>
+        <a href="#projects" onclick="closeMobile()">Projects</a>
+        <a href="#contact" onclick="closeMobile()">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ─── Hero ─── -->
+  <section id="home">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-eyebrow fade-up">Available for freelance work</div>
+        <h1 class="hero-title fade-up delay-1">
+          Hi, I'm<br><span class="highlight">Md Rahatil Rahman</span>
+        </h1>
+        <p class="hero-tagline fade-up delay-2">
+          Aspiring Web Developer &amp; Designer crafting clean, user-centred digital experiences. I turn ideas into interactive reality.
+        </p>
+        <div class="hero-actions fade-up delay-3">
+          <a href="#projects" class="btn btn-primary">View My Work ↓</a>
+          <a href="#contact" class="btn btn-outline">Let's Talk</a>
+        </div>
+        <div class="hero-badges fade-up delay-4">
+          <div class="hero-badge">⚡ HTML &amp; CSS</div>
+          <div class="hero-badge">🚀 JavaScript</div>
+          <div class="hero-badge">⚛️ React</div>
+          <div class="hero-badge">🐍 Python</div>
+          <div class="hero-badge">🎨 UI Design</div>
+        </div>
+      </div>
+      <div class="hero-scroll fade-up delay-4">
+        <div class="hero-scroll-line"></div>
+        <span>Scroll to explore</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── About ─── -->
+  <section id="about">
+    <div class="container">
+      <div class="about-grid">
+
+        <div class="about-img-wrap fade-up">
+          <div class="about-img">
+            <img src="profile.JPG" alt="Alex Chen profile photo" />
+          </div>
+        </div>
+
+        <div>
+          <p class="section-label fade-up">About Me</p>
+          <h2 class="section-title fade-up delay-1">Turning ideas into<br>elegant solutions</h2>
+          <div class="divider fade-up delay-1"></div>
+
+          <div class="about-stat-row fade-up delay-2">
+            <div class="about-stat">
+              <div class="about-stat-num">12+</div>
+              <div class="about-stat-label">Projects Built</div>
+            </div>
+            <div class="about-stat">
+              <div class="about-stat-num">3</div>
+              <div class="about-stat-label">Years Learning</div>
+            </div>
+            <div class="about-stat">
+              <div class="about-stat-num">5★</div>
+              <div class="about-stat-label">Client Rating</div>
+            </div>
+          </div>
+
+          <p class="about-bio fade-up delay-2">
+            I'm a Computer Science student at Daffodil International University with a passion for building beautiful, functional web applications. I specialise in front-end development with a keen eye for design, and I'm always eager to learn new technologies and best practices.
+          </p>
+          <p class="about-bio fade-up delay-2" style="margin-top:-0.5rem;">
+            When I'm not coding, you'll find me sketching UI concepts, exploring open-source projects, or competing in hackathons.
+          </p>
+
+          <div class="fade-up delay-3">
+            <div class="skills-title">Tech Stack</div>
+            <div class="skills-grid">
+              <span class="skill-badge">HTML5</span>
+              <span class="skill-badge">CSS3</span>
+              <span class="skill-badge">JavaScript</span>
+              <span class="skill-badge">React</span>
+              <span class="skill-badge">Node.js</span>
+              <span class="skill-badge">Python</span>
+              <span class="skill-badge">Git</span>
+              <span class="skill-badge">Figma</span>
+              <span class="skill-badge">Tailwind</span>
+              <span class="skill-badge">SQL</span>
+            </div>
+
+            <div class="skill-bars">
+              <div class="skill-bar-item">
+                <div class="skill-bar-header"><span>HTML / CSS</span><span>95%</span></div>
+                <div class="skill-bar-track"><div class="skill-bar-fill" data-width="95"></div></div>
+              </div>
+              <div class="skill-bar-item">
+                <div class="skill-bar-header"><span>JavaScript</span><span>85%</span></div>
+                <div class="skill-bar-track"><div class="skill-bar-fill" data-width="85"></div></div>
+              </div>
+              <div class="skill-bar-item">
+                <div class="skill-bar-header"><span>React</span><span>75%</span></div>
+                <div class="skill-bar-track"><div class="skill-bar-fill" data-width="75"></div></div>
+              </div>
+              <div class="skill-bar-item">
+                <div class="skill-bar-header"><span>Python</span><span>70%</span></div>
+                <div class="skill-bar-track"><div class="skill-bar-fill" data-width="70"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Projects ─── -->
+  <section id="projects">
+    <div class="container">
+      <div class="projects-header">
+        <div>
+          <p class="section-label fade-up">My Work</p>
+          <h2 class="section-title fade-up delay-1">Featured Projects</h2>
+        </div>
+        <p class="fade-up delay-2" style="color:var(--text-muted);font-size:.95rem;max-width:320px;text-align:right;">
+          A selection of things I've built — from tools to full apps.
+        </p>
+      </div>
+
+      <div class="projects-grid">
+
+        <!-- Card 1 -->
+        <div class="project-card fade-up">
+          <div class="project-img">
+            <img src="data:image/jpeg;base64,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" alt="Task Manager App" />
+            <span class="project-tag">Cross Platform</span>
+          </div>
+          <div class="project-body">
+            <h3 class="project-title">Basic Calculator</h3>
+            <p class="project-desc">I built a basic calculator using Flutter with a clean UI and responsive buttons. It performs arithmetic operations smoothly and works on both Android and iOS.
+</p>
+            <div class="project-tech">
+              <span class="tech-chip">Flutter</span>
+          
+              <span class="tech-chip">Dart</span>
+            </div>
+            <div class="project-actions">
+              <button class="btn btn-outline btn-sm"><a href = "https://github.com/Ra-Ha-Til/basic_calculator">GitHub</a></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="project-card fade-up delay-1">
+          <div class="project-img">
+            <img src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=600&q=80&fit=crop" alt="Weather Dashboard" />
+            <span class="project-tag">Hotel </span>
+          </div>
+          <div class="project-body">
+            <h3 class="project-title">Hotel Management System</h3>
+            <p class="project-desc">I developed a Hotel Management System using Laravel, featuring modules for room booking, guest check-in/out, and payment management. It provides an efficient backend with secure authentication and database integration for streamlined hotel operations.</p>
+            <div class="project-tech">
+              <span class="tech-chip">JavaScript</span>
+              <span class="tech-chip">Laravel</span>
+              <span class="tech-chip">html</span>
+              <span class="tech-chip">CSS</span>
+            </div>
+            <div class="project-actions">
+              <button class="btn btn-outline btn-sm" ><a href = "https://github.com/Ra-Ha-Til/Hotel-Booking-System-By-Laravel">GitHub</a></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="project-card fade-up delay-2">
+          <div class="project-img">
+            <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=80&fit=crop" alt="E-Commerce Store" />
+            <span class="project-tag">E-Commerce</span>
+          </div>
+          <div class="project-body">
+            <h3 class="project-title">E-dokan</h3>
+            <p class="project-desc">A responsive e-commerce storefront with a shopping cart, product filtering, wishlist, and a mock checkout flow using localStorage for persistence.</p>
+            <div class="project-tech">
+              <span class="tech-chip">Laravel</span>
+              <span class="tech-chip">html</span>
+              <span class="tech-chip">CSS</span>
+              <span class="tech-chip">JavaScript</span>
+            </div>
+            <div class="project-actions">
+              <button class="btn btn-outline btn-sm" ><a href = "https://github.com/Ra-Ha-Til/E-Dokan">GitHub</a></button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Contact ─── -->
+  <section id="contact">
+    <div class="container">
+      <div style="max-width:560px;margin-bottom:3.5rem;">
+        <p class="section-label fade-up">Get in Touch</p>
+        <h2 class="section-title fade-up delay-1">Let's build something<br>great together</h2>
+        <div class="divider fade-up delay-1"></div>
+      </div>
+
+      <div class="contact-grid">
+
+        <div class="fade-up">
+          <h3>Say hello 👋</h3>
+          <p>Whether you have a project in mind, a question, or just want to connect — my inbox is always open.</p>
+
+          <div class="contact-item">
+            <div class="contact-icon">📧</div>
+            <div>
+              <div class="contact-item-label">Email</div>
+              <div class="contact-item-value">rahatil880@email.com</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">📍</div>
+            <div>
+              <div class="contact-item-label">Location</div>
+              <div class="contact-item-value">57/2 HM Sen Road Bandar, Narayangonj</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">🎓</div>
+            <div>
+              <div class="contact-item-label">University</div>
+              <div class="contact-item-value">Daffodil International University</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="fade-up delay-2">
+          <form class="contact-form" id="contactForm" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="name">Your Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter your name" required />
+              </div>
+              <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="your@example.com" required />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="subject">Subject</label>
+              <input type="text" id="subject" name="subject" placeholder="What's this about?" />
+            </div>
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" placeholder="Tell me about your project or idea..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
+              Send Message ✉️
+            </button>
+            <div class="form-success" id="formSuccess">
+              ✅ &nbsp; Message sent! I'll get back to you within 24 hours.
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Footer ─── -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-copy">
+          © 2025 <span>Ra Ha Til</span>. Designed &amp; Built with ❤️
+        </div>
+        <div class="footer-socials">
+          <a href="https://github.com/Ra-Ha-Til" target="_blank" rel="noopener" class="social-link" title="GitHub">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.373 0 12c0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.085 1.84 1.237 1.84 1.237 1.07 1.834 2.807 1.304 3.492.997.108-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.93 0-1.31.468-2.38 1.235-3.22-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.29-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.233 1.91 1.233 3.22 0 4.61-2.807 5.625-5.479 5.92.43.372.823 1.102.823 2.222 0 1.606-.015 2.896-.015 3.286 0 .322.216.694.825.576C20.565 21.796 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/in/rahatil4769/" target="_blank" rel="noopener" class="social-link" title="LinkedIn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+          <a href="https://twitter.com" target="_blank" rel="noopener" class="social-link" title="Twitter / X">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scroll to Top -->
+  <button id="scrollTop" aria-label="Scroll to top">↑</button>
+
+  <script>
+    /* ────────────────────────────────────
+       THEME TOGGLE
+    ──────────────────────────────────── */
+    const html       = document.documentElement;
+    const themeBtn   = document.getElementById('themeToggle');
+    const themeIcon  = document.getElementById('themeIcon');
+    const themeLabel = document.getElementById('themeLabel');
+
+    // Read saved preference or default to dark
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    applyTheme(savedTheme);
+
+    themeBtn.addEventListener('click', () => {
+      const next = html.dataset.theme === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+      localStorage.setItem('theme', next);
+    });
+
+    function applyTheme(theme) {
+      html.dataset.theme = theme;
+      if (theme === 'dark') {
+        themeIcon.textContent  = '🌙';
+        themeLabel.textContent = 'Light';
+      } else {
+        themeIcon.textContent  = '☀️';
+        themeLabel.textContent = 'Dark';
+      }
+    }
+
+    /* ────────────────────────────────────
+       MOBILE NAV
+    ──────────────────────────────────── */
+    const hamburger = document.getElementById('hamburger');
+    const navMobile = document.getElementById('navMobile');
+
+    hamburger.addEventListener('click', () => {
+      navMobile.classList.toggle('open');
+    });
+
+    function closeMobile() {
+      navMobile.classList.remove('open');
+    }
+
+    /* ────────────────────────────────────
+       SCROLL TO TOP
+    ──────────────────────────────────── */
+    const scrollTopBtn = document.getElementById('scrollTop');
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 400) {
+        scrollTopBtn.classList.add('visible');
+      } else {
+        scrollTopBtn.classList.remove('visible');
+      }
+    });
+
+    scrollTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    /* ────────────────────────────────────
+       CONTACT FORM
+    ──────────────────────────────────── */
+    const form        = document.getElementById('contactForm');
+    const formSuccess = document.getElementById('formSuccess');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault(); // Prevent page reload
+
+      const name    = document.getElementById('name').value.trim();
+      const email   = document.getElementById('email').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      if (!name || !email || !message) {
+        // Simple inline validation
+        if (!name)    document.getElementById('name').style.borderColor = '#ff4d4d';
+        if (!email)   document.getElementById('email').style.borderColor = '#ff4d4d';
+        if (!message) document.getElementById('message').style.borderColor = '#ff4d4d';
+        return;
+      }
+
+      // Reset border colors
+      ['name','email','message'].forEach(id => {
+        document.getElementById(id).style.borderColor = '';
+      });
+
+      // Clear form
+      form.reset();
+
+      // Show success message
+      formSuccess.classList.add('visible');
+      setTimeout(() => formSuccess.classList.remove('visible'), 5000);
+    });
+
+    /* ────────────────────────────────────
+       PROJECT BUTTON ALERTS
+    ──────────────────────────────────── */
+    function showDemo()   { alert('🚀 Demo link coming soon!'); }
+    function showGithub() { alert('🐙 GitHub repo coming soon!'); }
+
+    /* ────────────────────────────────────
+       INTERSECTION OBSERVER – FADE IN
+    ──────────────────────────────────── */
+    const fadeEls = document.querySelectorAll('.fade-up');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    fadeEls.forEach(el => observer.observe(el));
+
+    /* ────────────────────────────────────
+       SKILL BAR ANIMATION
+    ──────────────────────────────────── */
+    const barObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.querySelectorAll('.skill-bar-fill').forEach(bar => {
+            const target = bar.dataset.width;
+            // Small timeout so CSS transition fires after element is visible
+            setTimeout(() => { bar.style.width = target + '%'; }, 200);
+          });
+          barObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    const skillBarsSection = document.querySelector('.skill-bars');
+    if (skillBarsSection) barObserver.observe(skillBarsSection);
+  </script>
+</body>
+</html>
